@@ -1,0 +1,3 @@
+RewriteEngine On
+RewriteCond %{SCRIPT_FILENAME} !-f
+RewriteRule !^site(/?|/.+)$ /mvc-app%{REQUEST_URI} [L]
