@@ -1,7 +1,23 @@
 <?php
+namespace Library;
 
 abstract class Controller 
 {
+    
+    protected $container;
+    
+    public function setContainer(Container $container)
+    {
+       $this->container  = $container;
+       
+       return $this;
+    }
+    
+    public function get($key)
+    {
+        return $this->container->get($key);
+    }
+    
     //todo_2: make as public static function (позднее стат связывание)
      public static function getClassName()
     {
@@ -9,13 +25,14 @@ abstract class Controller
     }
     
       
-    public static function render($view)
+    public static function render($view, array $args = [])
     { 
-        $dir = str_replace('Controller','',  static::getClassName());
+        extract($args);
+        $dir = str_replace(['\\','Controller'],'',  static::getClassName());
         $file = VIEW_DIR . $dir . DS . $view;
 
         if(!file_exists($file)){
-           throw new \Exception("{$file} not found!");
+           throw new \Exception("{$file} not found!".PHP_EOL.__FILE__.PHP_EOL."- in ".__LINE__.PHP_EOL);
         }
         
         ob_start();

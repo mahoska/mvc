@@ -1,2 +1,6 @@
 <h1>Books</h1>
-this is list books
+author: <?=$author?><br>
+this is list books:<br>
+<?php foreach($books as $book): ?>
+    <?=var_dump($book)?><br>
+<?php endforeach; ?>

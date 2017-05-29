@@ -1,5 +1,5 @@
 <?php
-//namespace Library;
+namespace Library;
 
 class Request{
     private $get;
