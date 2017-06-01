@@ -1,6 +1,30 @@
 <h1>Books</h1>
-author: <?=$author?><br>
-this is list books:<br>
-<?php foreach($books as $book): ?>
-    <?=var_dump($book)?><br>
-<?php endforeach; ?>
+
+<hr>
+
+<div class="row">
+    
+    <?php  foreach ($books as $book) : ?>
+      <div class="col-sm-6 col-md-4">
+        <div class="thumbnail book-item">
+          <img src="https://i.ytimg.com/vi/prALrHUJ8Ns/hqdefault.jpg" alt="">
+          <div class="caption">
+            <h3 class="book-title"><?=$book->getTitle();?></h3>
+            <div class=' js-short-text small-text book-description' style='overflow:hidden' >
+                <?=$book->getDescription();?>
+                <span class='read-next small-text'  style='display:none;' >...</span>
+            </div>
+            <span class='read-next small-text'  style='display:none;' >...</span>
+            <br><br>
+            <p>
+                <a href="/index.php?route=book/show&amp;id=<?=$book->getId()?>" class="btn btn-primary" role="button">Details</a> 
+                <a href="#" class="btn btn-default" role="button">Add to cart</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    <?php endforeach ?>
+    
+</div>
+
+

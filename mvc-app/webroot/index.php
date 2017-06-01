@@ -2,7 +2,7 @@
 error_reporting(E_ALL);
 
 define('DS', DIRECTORY_SEPARATOR);
-define('ROOT', __DIR__.DS);
+define('ROOT', __DIR__.DS.'..'.DS);//   ../
 define('VIEW_DIR', ROOT.'View'.DS);
 
     spl_autoload_register(function($className){
@@ -25,13 +25,19 @@ define('VIEW_DIR', ROOT.'View'.DS);
     
     \Library\Session::start();
 
-    try{
-    
+//    try{
+        
         $request = new \Library\Request();
+        
+        $pdo = new \PDO('mysql: host=localhost; dbname=mvc_17_03', 'root', '');
+        //при любых ошибках будет выдавать exception
+        $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+        $pdo->exec("SET NAMES utf8");
         
         $container = new \Library\Container();
         $container->set('router', new \Library\Router());
-        
+        $container->set('db_connect', $pdo);
+        $container->set('repository', (new \Library\RepositoryManager())->setPdo($pdo));
         //var_dump($container);
          
         $route = $request->get('route','default/index');//если параметра route вообще нет
@@ -51,23 +57,23 @@ define('VIEW_DIR', ROOT.'View'.DS);
              throw new Exception("{$action} not found".PHP_EOL.__FILE__.PHP_EOL."- in ".__LINE__.PHP_EOL);
         }
 
-        $content = $controller->$action($request);
-
-        require_once VIEW_DIR.'layout.phtml';
+        echo $content = $controller->$action($request); //echo а не require чтоб мы мошли возвращать не обязательно html, а например xml
+        //подгрузку layout делаем в контроллере
+       
         
-}catch(PDOException $e) {
-    $time = date('Y m d H:i:s');
-    file_put_contents("errors",  "Connect error($time): ".PHP_EOL.$e->getMessage().PHP_EOL.PHP_EOL, FILE_APPEND);
-    $path = ROOT."index.php?route=default/error";
-    $controller->get('router')->redirect($path);
-    //header("Location: {$path}");
-}
-catch(Exception $e){
-    $time = date('Y m d H:i:s');
-    file_put_contents("errors", "ERROR_TIME:$time".PHP_EOL.$e->getMessage().PHP_EOL.PHP_EOL, FILE_APPEND);
-    $path = ROOT."index.php?route=default/index";
-    $controller->get('router')->redirect($path);
-    //header("Location: {$path}");
-}
+//}catch(PDOException $e) {
+//    $time = date('Y m d H:i:s');
+//    file_put_contents("errors",  "Connect error($time): ".PHP_EOL.$e->getMessage().PHP_EOL.PHP_EOL, FILE_APPEND);
+//    $path = ROOT."index.php?route=default/error";
+//    $controller->get('router')->redirect($path);
+//    //header("Location: {$path}");
+//}
+//catch(Exception $e){
+//    $time = date('Y m d H:i:s');
+//    file_put_contents("errors", "ERROR_TIME:$time".PHP_EOL.$e->getMessage().PHP_EOL.PHP_EOL, FILE_APPEND);
+//    $path = ROOT."index.php?route=default/index";
+//    $controller->get('router')->redirect($path);
+//    //header("Location: {$path}");
+//}
     
 ?>

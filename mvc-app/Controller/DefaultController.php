@@ -3,7 +3,7 @@ namespace Controller;
 
 use Library\Controller;
 use Model\Form\FeedbackForm;
-use \Model\FeedbackModel;
+use \Model\FeedbackRepository;
 use Library\Request;
 use Library\Session;
 
@@ -24,14 +24,15 @@ class DefaultController extends Controller
     
     public function feedbackAction(Request $request)
     {
+        
         $form = new FeedbackForm($request);
  
         if($request->isPost()){
             $err_str="";//для ошибок;
             //if(!$form->isValid($err_str))throw new \Exception ("bad email:$err_str");
             if($form->isValid($err_str)){
-                $model = new FeedbackModel();
-                $model->save([
+                $repository= $this->get('repository')->getRepository('Feedback');
+                $repository->save([
                     'author'=>$form->author,
                     'email'=>$form->email,
                     'message'=>$form->message,

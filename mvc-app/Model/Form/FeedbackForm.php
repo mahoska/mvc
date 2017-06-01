@@ -24,7 +24,7 @@ class FeedbackForm{
         //--проверка корректности email
         //[a-z0-9][a-z0-9\.-_]*[a-z0-9]+@([a-z0-9]+([a-z0-9-]*[a-z0-9]+)*\.)+[a-z]+/i
         //if (!preg_match("/^[-0-9a-z_\.]+@[-0-9a-z_^\.]+\.[a-z]{2,6}$/i", $this->email))
-        $this->email = trim($this->email);
+        $this->email = trim($this->email);     
         $uncorrect_symbol = [' ',',', ':', ';', '!', '#', '%', '*', '(', ')', '=', '+', '{', '}', '[', ']', '"',  '/', '\\', '|' ];
         for($i = 0, $len = strlen($this->email); $i < $len;  $i++){
             foreach($uncorrect_symbol as $symbol){

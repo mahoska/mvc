@@ -1,0 +1,35 @@
+<div class='row'>
+    <div class='col-md-12'>
+        <h3><?=$book->getTitle();?></h3>
+    </div>
+</div>
+<br/>
+<div class='row'>
+    <div class='col-md-1'></div>
+    <div class='col-md-11'>
+        <b>Автор(ы): </b>
+        <i><?=$authors?></i>
+    </div>
+</div>
+<br/>
+<div class="row">
+    <div class='col-md-3' class='none_margin '>
+        <img class='img-polaroid'  id='main_pic'  src="https://i.ytimg.com/vi/prALrHUJ8Ns/hqdefault.jpg" alt='picture'  onClick='showPicture($(this))'>
+    </div>
+<div class='col-md-3'>
+        <br/><h4 class='about_existence' ><?=($book->getStatus()?"Товар в наличии":"Нет в наличии")?></h4>
+</div>
+    <div class='col-md-6'></div>
+</div></br>
+
+<div class='row'>
+    <div class='col-md-12'>
+        <h4 style='color:red'> Цена: <?=$book->getPrice()?> грн</h4>
+    </div>
+</div>
+
+
+<div class='row'>
+<br/><div class='col-md-12'><?=$book->getDescription()?></div>
+</div>
+        
