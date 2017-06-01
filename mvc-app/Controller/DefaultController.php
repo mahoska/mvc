@@ -32,11 +32,8 @@ class DefaultController extends Controller
             //if(!$form->isValid($err_str))throw new \Exception ("bad email:$err_str");
             if($form->isValid($err_str)){
                 $repository= $this->get('repository')->getRepository('Feedback');
-                $repository->save([
-                    'author'=>$form->author,
-                    'email'=>$form->email,
-                    'message'=>$form->message,
-                ]);
+                $feedback = (new Feedback())->setFromForm($form);
+                $repository->save($feedback);
                 
                 Session::setFlash('Feedback sent','success'); 
                 $this->get('router')->redirect('/index.php?route=default/feedback');//get определен в Container,заменяет вызов $this->container->get('router')..
