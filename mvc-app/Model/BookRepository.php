@@ -16,12 +16,39 @@ class BookRepository
 //        return $sth->fetchAll(\PDO::FETCH_ASSOC);
 //    }
     
-    public function findAllActive()
+    public function findAllActive($offset, $count)
     {
-        $collection = [];
+        //$collection = [];
         //$pdo = DbConnection::getInstance()->getPdo();
        
-        $sth = $this->pdo->query("SELECT * FROM book WHERE status = 1 ");
+        $sth = $this->pdo->query("SELECT * FROM book WHERE status = 1 LIMIT {$offset}, {$count}");
+        return $this->getResult($sth);
+//        while ($res = $sth->fetch(\PDO::FETCH_ASSOC)) {
+//           
+//            $book = (new Book())
+//                ->setId($res['id'])
+//                ->setTitle($res['title'])
+//                ->setPrice($res['price'])
+//                ->setStatus((bool) $res['status'])
+//                ->setDescription($res['description'])
+//                ->setStyle($res['style_id'])
+//            ;
+//            $collection[] = $book;
+//        }
+//       
+//        return $collection;
+    }
+    
+    public function findAll($offset, $count)
+    {
+        $sth = $this->pdo->query("SELECT * FROM book LIMIT {$offset}, {$count}");
+        return $this->getResult($sth);
+
+    }
+    
+    public function getResult($sth)
+    {
+        $collection = [];    
         while ($res = $sth->fetch(\PDO::FETCH_ASSOC)) {
            
             $book = (new Book())
@@ -38,10 +65,15 @@ class BookRepository
         return $collection;
     }
     
+    public function countActive()
+    {
+        $sth = $this->pdo->query('SELECT COUNT(*) AS count FROM book WHERE status = 1');
+        return $sth->fetchColumn();
+    }
     
     public function count()
     {
-        $sth = $this->pdo->query('SELECT COUNT(*) AS count FROM book WHERE status = 1');
+        $sth = $this->pdo->query('SELECT COUNT(*) AS count FROM book');
         return $sth->fetchColumn();
     }
     
@@ -66,4 +98,7 @@ class BookRepository
         $book->setAuthors($authors_id);        
         return $book;
     }
+    
+    
+    
 }

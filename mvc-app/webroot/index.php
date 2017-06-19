@@ -29,6 +29,11 @@ define('VIEW_DIR', ROOT.'View'.DS);
         
         $request = new \Library\Request();
         
+        $isAdminUri = strpos($request->getUri(), '/admin') === 0;
+        
+        if($isAdminUri){
+            \Library\Controller::setAdminLoyout();
+        }
         $pdo = new \PDO('mysql: host=localhost; dbname=mvc_17_03', 'root', '');
         //при любых ошибках будет выдавать exception
         $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
@@ -48,7 +53,8 @@ define('VIEW_DIR', ROOT.'View'.DS);
             $route = ["default","index"];//перенаправить на default/index
         }
 
-        $controller = 'Controller\\'.ucfirst($route[0]).'Controller';//с большой буквы по стандарту
+        $controller = 'Controller\\'. ($isAdminUri ? "Admin\\": "") .ucfirst($route[0]).'Controller';//с большой буквы по стандарту
+        
         $action = $route[1].'Action';
 
         $controller = (new $controller())->setContainer($container);//закидываем в контроллер контейнер с нужными нам свойствами
@@ -56,7 +62,8 @@ define('VIEW_DIR', ROOT.'View'.DS);
         if(!method_exists($controller, $action)){
              throw new Exception("{$action} not found".PHP_EOL.__FILE__.PHP_EOL."- in ".__LINE__.PHP_EOL);
         }
-
+        
+        //var_dump($controller,$action);
         echo $content = $controller->$action($request); //echo а не require чтоб мы мошли возвращать не обязательно html, а например xml
         //подгрузку layout делаем в контроллере
        

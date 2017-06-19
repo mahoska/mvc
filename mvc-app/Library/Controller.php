@@ -6,7 +6,14 @@ abstract class Controller
     
     protected $container;
     
-    public function setContainer(Container $container)
+    private static $loyout = 'layout.phtml';
+
+    public static function setAdminLoyout()
+    {
+        self::$loyout = 'admin_layout.phtml';
+    }
+    
+        public function setContainer(Container $container)
     {
        $this->container  = $container;
        
@@ -28,7 +35,7 @@ abstract class Controller
     public static function render($view, array $args = [])
     { 
         extract($args);
-        $dir = str_replace(['\\','Controller'],'',  static::getClassName());
+        $dir = trim( str_replace(['\\','Controller'],[DS,''],  static::getClassName()),'/');
         $file = VIEW_DIR . $dir . DS . $view;
 
         if(!file_exists($file)){
@@ -40,7 +47,7 @@ abstract class Controller
         $content = ob_get_clean(); 
         
         ob_start();
-        require_once VIEW_DIR.'layout.phtml';
+        require_once VIEW_DIR.self::$loyout;
         return ob_get_clean(); 
     }
         

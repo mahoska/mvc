@@ -85,3 +85,11 @@ footer{
     margin:0px;
     overflow: hidden; 
 }
+
+
+.err_cl{
+display:none;
+color:red;
+font-size:7pt;
+}
+

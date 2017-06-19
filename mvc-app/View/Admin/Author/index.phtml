@@ -1,0 +1,42 @@
+<h1>Admin Authors</h1>
+<hr>
+<nav aria-label='Page navigation admin'>
+    <ul class='pagination'>
+        <?php foreach ($pagination->buttons as $button): ?>
+        <li <?=$button->isActive ? '' : ($button->isCurrent ? 'class="active"': 'class="disabled"')?> >
+            <?php if($button->isActive ):?>
+                <a href="/admin/index.php?route=author/index&amp;page= <?=$button->page?>"><?=$button->text?></a>
+            <?php else: ?>
+                 <span aria-hidden='true'><?=$button->text?></span>
+            <?php endif; ?>
+        </li>
+        <?php endforeach; ?>
+    </ul>
+</nav>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>FirstName</th>
+            <th>LastName</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach($authors as $author):?>
+        <tr>
+            <td><?=$author->getId()?></td>
+            <td><?=$author->getFirstName()?></td>
+            <td><?=$author->getLastName()?></td>
+            <td>
+                <a  href="#" type="button" class="btn btn-success btn-sm " aria-label="Left Align">
+                    <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                </a>
+                <a  href="#" type="button" class="btn btn-danger btn-sm " aria-label="Left Align">
+                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                </a>
+            </td>
+        </tr>
+        <?php endforeach;?>
+    </tbody>
+</table>

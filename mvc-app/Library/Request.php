@@ -34,6 +34,7 @@ class Request{
         return $uri[0];
     }
     
+    
     /*
     public function getIpAddress(){
         return $this->server('REMOTE_ADDR');

@@ -2,13 +2,15 @@
 
 namespace Model\Entity;
 
+use Model\Form\FeedbackForm;
+
 class Feedback
 { 
-    private $id;
+    //private $id;
     private $author;
     private $email;
     private $message;
-    private $created;
+    //private $created;
     
     public function getId()
     {
@@ -45,7 +47,7 @@ class Feedback
     
     public function getMessage()
     {
-        return $this->massage;
+        return $this->message;
     }
     
     public function setMessage($message)
@@ -62,6 +64,16 @@ class Feedback
     public function setCreated($created)
     {
         $this->created = $created;
+        return $this;
+    }
+    
+    
+     public function setFromForm(FeedbackForm $form)
+    {
+        foreach ($form as $property => $value) {
+            $this->$property = $value;
+        }
+        
         return $this;
     }
 }

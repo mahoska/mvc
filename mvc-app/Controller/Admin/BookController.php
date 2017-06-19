@@ -1,5 +1,5 @@
 <?php
-namespace Controller;
+namespace Controller\Admin;
 
 use Library\Controller;
 use Library\Request;
@@ -9,7 +9,7 @@ use Library\Pagination\Pagination;
 
 class BookController extends Controller
 {
-    const BOOKS_PER_PAGE = 6;
+    const BOOKS_PER_PAGE = 10;
     
     public static function getClassName()
     {
@@ -21,8 +21,8 @@ class BookController extends Controller
         $currentPage = $request->get('page', 1);
         
         $repository = $this->get('repository')->getRepository('Book');
-        $count = $repository->countActive();
-        $books = $repository->findAllActive(($currentPage-1) * self::BOOKS_PER_PAGE , self::BOOKS_PER_PAGE );
+        $count = $repository->count();
+        $books = $repository->findAll(($currentPage-1) * self::BOOKS_PER_PAGE , self::BOOKS_PER_PAGE );
        
         $pagination = new Pagination([
             'itemsCount' => $count,

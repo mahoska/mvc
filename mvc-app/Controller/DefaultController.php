@@ -6,6 +6,7 @@ use Model\Form\FeedbackForm;
 use \Model\FeedbackRepository;
 use Library\Request;
 use Library\Session;
+use Model\Entity\Feedback;
 
 
 
@@ -26,12 +27,13 @@ class DefaultController extends Controller
     {
         
         $form = new FeedbackForm($request);
- 
+        //var_dump($request);
         if($request->isPost()){
             $err_str="";//для ошибок;
             //if(!$form->isValid($err_str))throw new \Exception ("bad email:$err_str");
             if($form->isValid($err_str)){
                 $repository= $this->get('repository')->getRepository('Feedback');
+
                 $feedback = (new Feedback())->setFromForm($form);
                 $repository->save($feedback);
                 
